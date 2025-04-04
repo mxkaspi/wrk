@@ -9,9 +9,18 @@ jobs:
     strategy:
       matrix:
         builder: [macos-latest, ubuntu-latest]
+
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: build
+
+      - name: Build project
         run: make
+
+      - name: Upload build artifacts
+        if: success()
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-${{ matrix.builder }}
+          path: ./build
